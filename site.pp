@@ -1,9 +1,11 @@
+
 node '' {
 
-      notify {"hello checkmk Server!":}
-
+  notify {"hello checkmk Server!":}
+      include check_mk
 
 }
+
 # execute 'apt-get update'
 
 exec { 'apt-update':                    # exec resource named 'apt-update'
@@ -12,22 +14,8 @@ exec { 'apt-update':                    # exec resource named 'apt-update'
 
 
 
-#install apache2 package
-package { 'apache2':
-  require => Exec['apt-update'],        # require 'apt-update' before installing
-  ensure => installed,
-}
-
-# ensure apache2 service is running
-service { 'apache2':
-  ensure => running,
+Exec{ 'apt-get -f install':
+  command => '/usr/bin/apt-get -f install'
 
 }
 
-
-node '' {
-
-      notify {"hello checkmk Server!":}
-      include check_mk
-
-}
